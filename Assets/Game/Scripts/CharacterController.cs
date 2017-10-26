@@ -2,27 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChracterController : MonoBehaviour {
+public class CharacterController : MonoBehaviour {
 
     public float forceMult = 30.0f;
-    public float maxVelocity = 50.0f;
+    public float maxAngularVelocity = 20.0f;
 
     private Rigidbody rb;
-    private float maxSqVelocity;
 
     void Awake() // Recommended to use Awake instead of Start here.
     {
         rb = GetComponent<Rigidbody>();
-        maxSqVelocity = maxVelocity * maxVelocity;
-
+        rb.maxAngularVelocity = maxAngularVelocity;
     }
 
     void FixedUpdate() 
     {
-        if (rb.velocity.sqrMagnitude > maxVelocity)
-        {
-            rb.velocity = rb.velocity.normalized * maxVelocity;
-        }
         {
             if (SystemInfo.deviceType == DeviceType.Desktop)
             {
@@ -45,7 +39,7 @@ public class ChracterController : MonoBehaviour {
                 Vector3 move = new Vector3(moveH, 0.0f, moveV);
                 move = Camera.main.transform.TransformDirection(move);
                 move.y = 0.0f;
-                rb.AddForce(move * maxVelocity);
+                rb.AddForce(move * maxAngularVelocity);
             }
         }
     }

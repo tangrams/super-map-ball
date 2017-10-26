@@ -218,6 +218,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114831709443224416, guid: 7c634055caa6a40449ffae939c5a42e1,
+        type: 2}
+      propertyPath: CameraPitchAngle
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114558059317821680, guid: 7c634055caa6a40449ffae939c5a42e1, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 7c634055caa6a40449ffae939c5a42e1, type: 2}
@@ -287,7 +292,18 @@ Prefab:
       propertyPath: m_AngularDrag
       value: 0.1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114639396148492012, guid: 3c7c12f8acea3454fb22c41a248ef443,
+        type: 2}
+      propertyPath: maxVelocity
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114639396148492012, guid: 3c7c12f8acea3454fb22c41a248ef443,
+        type: 2}
+      propertyPath: maxAngularVelocity
+      value: 20
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114639396148492012, guid: 3c7c12f8acea3454fb22c41a248ef443, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 3c7c12f8acea3454fb22c41a248ef443, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1228484679 stripped
@@ -295,6 +311,19 @@ GameObject:
   m_PrefabParentObject: {fileID: 1901967257106374, guid: 3c7c12f8acea3454fb22c41a248ef443,
     type: 2}
   m_PrefabInternal: {fileID: 1228484678}
+--- !u!114 &1228484680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1228484679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95462a9db87ef4aa1857434b8bb345b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceMult: 50
+  maxAngularVelocity: 20
 --- !u!1 &1370947666
 GameObject:
   m_ObjectHideFlags: 0
