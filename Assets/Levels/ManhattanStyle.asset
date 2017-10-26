@@ -79,7 +79,7 @@ MonoBehaviour:
   - name: Roads
     layerStyles:
     - layerName: roads
-      Material: {fileID: 2100000, guid: ce1f4d2f66c614a9489e5ee52bbe34da, type: 2}
+      Material: {fileID: 2100000, guid: d881b786e8a584d79b49fac171c95ea0, type: 2}
       PolygonBuilderOptions:
         Material: {fileID: 0}
         Extrusion: 1
@@ -92,7 +92,7 @@ MonoBehaviour:
         Material: {fileID: 0}
         Extrusion: 1
         MinHeight: 0
-        MaxHeight: 0.6
+        MaxHeight: 1
         Width: 15
         MiterLimit: 3
         Enabled: 1
@@ -458,5 +458,37 @@ MonoBehaviour:
       RegexPattern: 
       MinRange: 4.5
       MaxRange: 5.5
+      MinRangeEnabled: 1
+      MaxRangeEnabled: 1
+  - name: Minor Roads
+    layerStyles:
+    - layerName: roads
+      Material: {fileID: 2100000, guid: d881b786e8a584d79b49fac171c95ea0, type: 2}
+      PolygonBuilderOptions:
+        Material: {fileID: 0}
+        Extrusion: 1
+        MinHeight: 0
+        MaxHeight: 0
+        TileUVs: 1
+        Enabled: 0
+        offset: {x: 0, y: 0}
+      PolylineBuilderOptions:
+        Material: {fileID: 0}
+        Extrusion: 1
+        MinHeight: 0
+        MaxHeight: 0.8
+        Width: 8
+        MiterLimit: 3
+        Enabled: 1
+    filter:
+      CollectionNameSet: []
+    Matcher:
+      type: 7
+      matchers: []
+      HasProperty: kind
+      PropertyValue: minor_road
+      RegexPattern: 
+      MinRange: 0
+      MaxRange: 0
       MinRangeEnabled: 1
       MaxRangeEnabled: 1
