@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour {
+public class BallController : MonoBehaviour {
 
     public float forceMult = 30.0f;
     public float maxAngularVelocity = 20.0f;
