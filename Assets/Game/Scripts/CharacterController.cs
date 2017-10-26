@@ -25,8 +25,7 @@ public class CharacterController : MonoBehaviour {
 
                 Vector3 move = new Vector3(moveH, 0.0f, moveV);
                 move = Camera.main.transform.TransformDirection(move);
-                // move.y = 0.0f;
-                // rb.AddForce(move * forceMult);
+
                 var torque = Vector3.Cross(Camera.main.transform.up, move);
                 rb.AddTorque(torque * forceMult, ForceMode.VelocityChange);
             }
@@ -38,8 +37,9 @@ public class CharacterController : MonoBehaviour {
 
                 Vector3 move = new Vector3(moveH, 0.0f, moveV);
                 move = Camera.main.transform.TransformDirection(move);
-                move.y = 0.0f;
-                rb.AddForce(move * maxAngularVelocity);
+
+                var torque = Vector3.Cross(Camera.main.transform.up, move);
+                rb.AddTorque(torque * forceMult, ForceMode.VelocityChange);
             }
         }
     }
