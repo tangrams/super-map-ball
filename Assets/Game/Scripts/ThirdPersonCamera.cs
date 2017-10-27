@@ -62,8 +62,9 @@ public class ThirdPersonCamera : MonoBehaviour {
 			FollowedObject.transform.position,
 			Vector3.up);
 
+		Vector3 surfaceNormal;
 		var frustrumPoints = ExtractFrustrumNearPlanePoints(cameraDesc);
-		float distance = GetMinimumCollisionDistanceFromTarget(frustrumPoints);
+		float distance = GetMinimumCollisionDistanceFromTarget(frustrumPoints, out surfaceNormal);
 
 		float adjustedDistance;
 		if (distance != -1)
@@ -77,15 +78,20 @@ public class ThirdPersonCamera : MonoBehaviour {
 
 		cameraPosition = new Vector3(-dir2d.x, Mathf.Sin(CameraPitchAngle * Mathf.Deg2Rad), -dir2d.y) * adjustedDistance;
 
-		transform.position = FollowedObject.transform.position + cameraPosition;
+		float e = Mathf.Tan(Camera.main.fieldOfView * Mathf.Deg2Rad * 0.5f);
+		Vector3 offsetFromSurface = surfaceNormal * e * Camera.main.nearClipPlane;
+
+		transform.position = FollowedObject.transform.position + cameraPosition + offsetFromSurface;
 		transform.LookAt(FollowedObject.transform);
 
 		targetLastPosition = FollowedObject.transform.position;
 	}
 
-	float GetMinimumCollisionDistanceFromTarget(Vector3[] nearPlaneFrustrumPoints)
+	float GetMinimumCollisionDistanceFromTarget(Vector3[] nearPlaneFrustrumPoints, out Vector3 surfaceNormal)
 	{
 		float distance = -1.0f;
+		surfaceNormal = Vector3.zero;
+
 		for (int i = 0; i < nearPlaneFrustrumPoints.Length; ++i)
 		{
 			Vector3 targetToFrustrumPoint = nearPlaneFrustrumPoints[i] - FollowedObject.transform.position;
@@ -111,6 +117,8 @@ public class ThirdPersonCamera : MonoBehaviour {
     						distance = raycastHitInfo.distance;
     					}
     				}
+
+					surfaceNormal = raycastHitInfo.normal;
 			    }
 			}
 		}
