@@ -87,6 +87,14 @@ namespace Mapzen.Unity
                 options.Width *= inverseTileScale;
                 options.MaxHeight *= inverseTileScale;
 
+                // FIXME: This is a hack to avoid roads z-fighting.
+                object identifier;
+                if (feature.TryGetProperty("id", out identifier) && identifier is double)
+                {
+                    double modz = 10;
+                    options.MaxHeight += (float)((double)identifier % modz / modz) * inverseTileScale;
+                }
+
                 return options;
             }
         }
