@@ -78,7 +78,7 @@ public class ThirdPersonCamera : MonoBehaviour {
 
 		cameraPosition = new Vector3(-dir2d.x, Mathf.Sin(CameraPitchAngle * Mathf.Deg2Rad), -dir2d.y) * adjustedDistance;
 
-		float e = Mathf.Tan(Camera.main.fieldOfView * Mathf.Deg2Rad * 0.5f);
+		float e = Mathf.Tan(Camera.main.fieldOfView * Mathf.Deg2Rad);
 		Vector3 offsetFromSurface = surfaceNormal * e * Camera.main.nearClipPlane;
 
 		transform.position = FollowedObject.transform.position + cameraPosition + offsetFromSurface;
