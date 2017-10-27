@@ -88,12 +88,32 @@ public class BallController : MonoBehaviour {
 
     void setDistance()
     {
-        int distanceToTarget = (int)(target.transform.position - transform.position).magnitude;
+        Vector3 vectorToTarget = target.transform.position - transform.position;
+
+        int distanceToTarget = (int)vectorToTarget.magnitude;
         distanceText.text = distanceToTarget.ToString();
 
-        float angleToRotate = Vector3.Angle(transform.position, rb.velocity);
+        Vector3 currentDirection;
+
+        if (rb.velocity.magnitude > 0.0f)
+        {
+            currentDirection = rb.velocity.normalized;
+        }
+        else
+        {
+            currentDirection = -transform.position.normalized;
+        }
+
+        float angleToRotate = SignedAngleBetween(vectorToTarget.normalized, currentDirection, transform.up) + 90;
 
         targetDirection.rectTransform.Rotate(0.0f, 0.0f, angleToRotate - targetDirectionAngle);
         targetDirectionAngle = angleToRotate;
+    }
+
+    float SignedAngleBetween(Vector3 a, Vector3 b, Vector3 n){
+        float angle = Vector3.Angle(a,b);
+        float sign = Mathf.Sign(Vector3.Dot(n,Vector3.Cross(a,b)));
+
+        return angle * sign;
     }
 }
