@@ -5,6 +5,7 @@ using UnityEngine;
 public class IntroSequence : MonoBehaviour {
 
     public GameObject IntroObject;
+    public GameObject GamePlayUIObject;
 
     private MonoBehaviour ballController;
     private MonoBehaviour thirdPersonCamera;
@@ -25,6 +26,11 @@ public class IntroSequence : MonoBehaviour {
             {
                 thirdPersonCamera.enabled = false;
             }
+        }
+
+        if (GamePlayUIObject != null)
+        {
+            GamePlayUIObject.SetActive(false);
         }
 
         if (IntroObject != null)
@@ -48,6 +54,11 @@ public class IntroSequence : MonoBehaviour {
             if (thirdPersonCamera != null)
             {
                 thirdPersonCamera.enabled = true;
+            }
+
+            if (GamePlayUIObject != null)
+            {
+                GamePlayUIObject.SetActive(true);
             }
 
             if (IntroObject != null)
