@@ -492,3 +492,35 @@ MonoBehaviour:
       MaxRange: 0
       MinRangeEnabled: 1
       MaxRangeEnabled: 1
+  - name: Highways
+    layerStyles:
+    - layerName: roads
+      Material: {fileID: 2100000, guid: d881b786e8a584d79b49fac171c95ea0, type: 2}
+      PolygonBuilderOptions:
+        Material: {fileID: 0}
+        Extrusion: 1
+        MinHeight: 0
+        MaxHeight: 0
+        TileUVs: 0
+        Enabled: 1
+        offset: {x: 0, y: 0}
+      PolylineBuilderOptions:
+        Material: {fileID: 0}
+        Extrusion: 1
+        MinHeight: 0
+        MaxHeight: 1.2
+        Width: 8
+        MiterLimit: 3
+        Enabled: 1
+    filter:
+      CollectionNameSet: []
+    Matcher:
+      type: 7
+      matchers: []
+      HasProperty: kind
+      PropertyValue: highway
+      RegexPattern: 
+      MinRange: 0
+      MaxRange: 0
+      MinRangeEnabled: 1
+      MaxRangeEnabled: 1
