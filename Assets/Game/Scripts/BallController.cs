@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -70,8 +70,9 @@ public class BallController : MonoBehaviour {
                 Vector3 move = new Vector3(moveH, 0.0f, moveV);
                 move = Camera.main.transform.TransformDirection(move);
 
-                var torque = Vector3.Cross(Camera.main.transform.up, move);
-                rb.AddTorque(torque * forceMult, ForceMode.VelocityChange);
+                // var torque = Vector3.Cross(Camera.main.transform.up, move);
+                // rb.AddTorque(torque * forceMult, ForceMode.VelocityChange);
+                rb.AddForce(move * forceMult);
 
                 if (Input.GetTouch(0).phase == TouchPhase.Ended)
                 {
