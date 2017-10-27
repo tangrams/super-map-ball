@@ -391,5 +391,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dbcedf0356f546cf9fbc46dba50abc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Character: {fileID: 1901967257106374, guid: 3c7c12f8acea3454fb22c41a248ef443, type: 2}
+  Character: {fileID: 0}
   NudgeFactor: 0.8
