@@ -7,12 +7,17 @@ public class BallController : MonoBehaviour {
 
     public float forceMult = 30.0f;
     public float maxAngularVelocity = 20.0f;
+    public float doubleTapTimeSeconds = 0.3f;
+    public float nudgeForceFactor = 5.0f;
     public GameObject target;
     public Text distanceText;
     public RawImage targetDirection;
 
     private Rigidbody rb;
     private float targetDirectionAngle;
+    private float initialTargetDistance;
+    private Vector3 vectorToTarget;
+    private float lasTapTime;
 
     void Awake() // Recommended to use Awake instead of Start here.
     {
@@ -24,6 +29,17 @@ public class BallController : MonoBehaviour {
 
     void Update() {
         setDistance();
+    }
+
+    void Nudge()
+    {
+        Vector3 randomForce = Random.onUnitSphere;
+        if (randomForce.y < 0.0f)
+        {
+            randomForce.y *= -1.0f;
+        }
+        rb.AddForce(randomForce * nudgeForceFactor, ForceMode.Impulse);
+        Debug.Log("Nudge");
     }
 
     void FixedUpdate() 
@@ -39,6 +55,11 @@ public class BallController : MonoBehaviour {
 
                 var torque = Vector3.Cross(Camera.main.transform.up, move);
                 rb.AddTorque(torque * forceMult, ForceMode.VelocityChange);
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Nudge();
+                }
             }
             else
             {
@@ -51,6 +72,16 @@ public class BallController : MonoBehaviour {
 
                 var torque = Vector3.Cross(Camera.main.transform.up, move);
                 rb.AddTorque(torque * forceMult, ForceMode.VelocityChange);
+
+                if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                {
+                    if (Time.time - lasTapTime < doubleTapTimeSeconds)
+                    {
+                        Nudge();
+                    }
+
+                    lasTapTime = Time.time;
+                }
             }
         }
     }
