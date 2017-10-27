@@ -9,15 +9,16 @@ public class BallController : MonoBehaviour {
     public float maxAngularVelocity = 20.0f;
     public GameObject target;
     public Text distanceText;
+    public RawImage targetDirection;
 
     private Rigidbody rb;
-    private float initialTargetDistance;
-    private Vector3 vectorToTarget;
+    private float targetDirectionAngle;
 
     void Awake() // Recommended to use Awake instead of Start here.
     {
         rb = GetComponent<Rigidbody>();
         rb.maxAngularVelocity = maxAngularVelocity;
+        targetDirectionAngle = 0.0f;
         setDistance();
     }
 
@@ -56,9 +57,12 @@ public class BallController : MonoBehaviour {
 
     void setDistance()
     {
-        Vector3 vectorToTarget = (target.transform.position - transform.position);
-        Vector3 directionToTarget = vectorToTarget.normalized;
-        int distanceToTarget = (int)vectorToTarget.magnitude;
+        int distanceToTarget = (int)(target.transform.position - transform.position).magnitude;
         distanceText.text = distanceToTarget.ToString();
+
+        float angleToRotate = Vector3.Angle(transform.position, rb.velocity);
+
+        targetDirection.rectTransform.Rotate(0.0f, 0.0f, angleToRotate - targetDirectionAngle);
+        targetDirectionAngle = angleToRotate;
     }
 }
