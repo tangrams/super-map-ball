@@ -14,17 +14,18 @@ public class BallController : MonoBehaviour {
     public RawImage targetDirection;
 
     private Rigidbody rb;
-    private float targetDirectionAngle;
     private float initialTargetDistance;
     private Vector3 vectorToTarget;
+    private Vector3 currentDirection;
     private float lasTapTime;
+    private float angle;
 
     void Awake() // Recommended to use Awake instead of Start here.
     {
         rb = GetComponent<Rigidbody>();
         rb.maxAngularVelocity = maxAngularVelocity;
-        targetDirectionAngle = 0.0f;
         setDistance();
+        transform.Translate(0.0f, 25.0f, 0.0f);
     }
 
     void Update() {
@@ -94,27 +95,15 @@ public class BallController : MonoBehaviour {
         int distanceToTarget = (int)vectorToTarget.magnitude;
         distanceText.text = distanceToTarget.ToString();
 
-        Vector3 currentDirection;
-
         if (rb.velocity.magnitude > 0.0f)
         {
             currentDirection = rb.velocity.normalized;
         }
-        else
-        {
-            currentDirection = -transform.position.normalized;
-        }
 
-        float angleToRotate = SignedAngleBetween(vectorToTarget.normalized, currentDirection, transform.up) + 90;
-
-        targetDirection.rectTransform.Rotate(0.0f, 0.0f, angleToRotate - targetDirectionAngle);
-        targetDirectionAngle = angleToRotate;
-    }
-
-    float SignedAngleBetween(Vector3 a, Vector3 b, Vector3 n){
-        float angle = Vector3.Angle(a,b);
-        float sign = Mathf.Sign(Vector3.Dot(n,Vector3.Cross(a,b)));
-
-        return angle * sign;
+        Vector2 dirToTarget = new Vector2(vectorToTarget.x, vectorToTarget.z);
+        Vector2 dir = new Vector2(currentDirection.x, currentDirection.z);
+        float newAngle = Vector2.SignedAngle(dir, dirToTarget);
+        targetDirection.rectTransform.eulerAngles = new Vector3(0.0f, 0.0f, Mathf.Lerp(angle, newAngle, 0.5f));
+        angle = newAngle;
     }
 }
