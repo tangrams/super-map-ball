@@ -29,8 +29,6 @@ public class ThirdPersonCamera : MonoBehaviour {
 
 	void Start()
 	{
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
 		dir2d = Vector2.right;
 	}
 	
