@@ -34,7 +34,14 @@ public class FinishUI : MonoBehaviour {
             {
                 textComponent.enabled = false;
             }
-            
+            if (runTime < Time.deltaTime)
+            {
+                var titleSequence = Camera.main.GetComponent<TitleSequence>();
+                if (titleSequence != null)
+                {
+                    titleSequence.SetTitleSequenceActive(true);
+                }
+            }
         }
         else
         {
@@ -46,6 +53,13 @@ public class FinishUI : MonoBehaviour {
 
     public void DoFinishSequence()
     {
+        textComponent.text = "FINISH";
+        runTime = Duration;
+    }
+
+    public void DoTimeoutSequence()
+    {
+        textComponent.text = "TIME'S UP";
         runTime = Duration;
     }
 }

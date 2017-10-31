@@ -6,16 +6,26 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class RaceTimer : MonoBehaviour {
 
-    public float SecondsRemaining = 100;
+    public const float SecondsAllowed = 90;
 
     public bool IsRunning = true;
 
+    public GameObject FinishUIObject;
+
+    private float secondsRemaining = SecondsAllowed;
+
     private Text text;
+
+    private FinishUI finishUI;
 
 	// Use this for initialization
 	void Start()
     {
         text = GetComponent<Text>();
+        if (FinishUIObject != null)
+        {
+            finishUI = FinishUIObject.GetComponent<FinishUI>();
+        }
 	}
 	
 	// Update is called once per frame
@@ -23,11 +33,21 @@ public class RaceTimer : MonoBehaviour {
     {
         if (IsRunning)
         {
-            SecondsRemaining = Mathf.Max(SecondsRemaining - Time.deltaTime, 0);
+            if (secondsRemaining < Time.deltaTime && finishUI != null)
+            {
+                finishUI.DoTimeoutSequence();
+                IsRunning = false;
+            }
+            secondsRemaining = Mathf.Max(secondsRemaining - Time.deltaTime, 0);
 
-            text.text = GetFormattedTime(SecondsRemaining);
+            text.text = GetFormattedTime(secondsRemaining);
         }
 	}
+
+    public void Reset()
+    {
+        secondsRemaining = SecondsAllowed;
+    }
 
     public string GetFormattedTime(float seconds)
     {

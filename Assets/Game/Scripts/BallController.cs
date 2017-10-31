@@ -13,6 +13,8 @@ public class BallController : MonoBehaviour {
     public Text distanceText;
     public GameObject targetDirection;
 
+    public GameObject StartPosition;
+
     private Rigidbody rb;
     private float initialTargetDistance;
     private Vector3 vectorToTarget;
@@ -25,7 +27,6 @@ public class BallController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         rb.maxAngularVelocity = maxAngularVelocity;
         setDistance();
-        transform.Translate(0.0f, 25.0f, 0.0f);
     }
 
     void Update() {
@@ -46,23 +47,7 @@ public class BallController : MonoBehaviour {
     void FixedUpdate() 
     {
         {
-            if (SystemInfo.deviceType == DeviceType.Desktop)
-            {
-                float moveH = Input.GetAxis("Horizontal");
-                float moveV = Input.GetAxis("Vertical");
-
-                Vector3 move = new Vector3(moveH, 0.0f, moveV);
-                move = Camera.main.transform.TransformDirection(move);
-
-                var torque = Vector3.Cross(Camera.main.transform.up, move);
-                rb.AddTorque(torque * forceMult, ForceMode.VelocityChange);
-
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    Nudge();
-                }
-            }
-            else
+            #if UNITY_ANDROID || UNITY_IOS
             {
                 // TODO: Test
                 float moveH = Input.acceleration.x;
@@ -85,6 +70,24 @@ public class BallController : MonoBehaviour {
                     lasTapTime = Time.time;
                 }
             }
+            #else
+            {
+                float moveH = Input.GetAxis("Horizontal");
+                float moveV = Input.GetAxis("Vertical");
+
+                Vector3 move = new Vector3(moveH, 0.0f, moveV);
+                move = Camera.main.transform.TransformDirection(move);
+
+                var torque = Vector3.Cross(Camera.main.transform.up, move);
+                rb.AddTorque(torque * forceMult, ForceMode.VelocityChange);
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Nudge();
+                }
+            }
+            #endif
+
         }
     }
 
@@ -102,5 +105,15 @@ public class BallController : MonoBehaviour {
 
         var vectorToTargetLocal = Camera.main.transform.InverseTransformVector(vectorToTargetWorld);
         targetDirection.transform.localRotation = Quaternion.FromToRotation(Vector3.up, vectorToTargetLocal);
+    }
+
+    public void ResetPosition()
+    {
+        if (StartPosition != null)
+        {
+            transform.position = StartPosition.transform.position;
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 }
