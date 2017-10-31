@@ -11,7 +11,7 @@ public class BallController : MonoBehaviour {
     public float nudgeForceFactor = 5.0f;
     public GameObject target;
     public Text distanceText;
-    public RawImage targetDirection;
+    public GameObject targetDirection;
 
     private Rigidbody rb;
     private float initialTargetDistance;
@@ -90,9 +90,9 @@ public class BallController : MonoBehaviour {
 
     void setDistance()
     {
-        Vector3 vectorToTarget = target.transform.position - transform.position;
+        Vector3 vectorToTargetWorld = target.transform.position - transform.position;
 
-        int distanceToTarget = (int)vectorToTarget.magnitude;
+        int distanceToTarget = (int)vectorToTargetWorld.magnitude;
         distanceText.text = distanceToTarget.ToString();
 
         if (rb.velocity.magnitude > 0.0f)
@@ -100,10 +100,7 @@ public class BallController : MonoBehaviour {
             currentDirection = rb.velocity.normalized;
         }
 
-        Vector2 dirToTarget = new Vector2(vectorToTarget.x, vectorToTarget.z);
-        Vector2 dir = new Vector2(currentDirection.x, currentDirection.z);
-        float newAngle = Vector2.SignedAngle(dir, dirToTarget);
-        targetDirection.rectTransform.eulerAngles = new Vector3(0.0f, 0.0f, Mathf.Lerp(angle, newAngle, 0.5f));
-        angle = newAngle;
+        var vectorToTargetLocal = Camera.main.transform.InverseTransformVector(vectorToTargetWorld);
+        targetDirection.transform.localRotation = Quaternion.FromToRotation(Vector3.up, vectorToTargetLocal);
     }
 }
