@@ -41,7 +41,7 @@ public class StartUI : MonoBehaviour {
             }
             else
             {
-                textComponent.text = "START";
+                textComponent.text = "FIND THE CHEETO";
                 if (playerController != null)
                 {
                     playerController.enabled = true;
