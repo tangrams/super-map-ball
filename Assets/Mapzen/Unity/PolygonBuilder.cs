@@ -8,67 +8,36 @@ namespace Mapzen.Unity
 {
     public class PolygonBuilder : IGeometryHandler
     {
-        [Serializable]
-        public enum ExtrusionType
-        {
-            TopOnly,
-            TopAndSides,
-            SidesOnly,
-        }
-
-        [Serializable]
-        public struct Options
-        {
-            public Material Material;
-            public ExtrusionType Extrusion;
-            public float MinHeight;
-            public float MaxHeight;
-            public bool TileUVs;
-            public bool Enabled;
-            public Vector2 offset;
-        }
-
-        public PolygonBuilder(MeshData outputMeshData, Options options, Matrix4x4 transform)
+        public PolygonBuilder(MeshData outputMeshData, PolygonOptions options, Matrix4x4 transform)
         {
             this.transform = transform;
             this.outputMeshData = outputMeshData;
             this.options = options;
-            this.coordinates = new List<float>();
-            this.lastPoint = new Point();
-            this.rings = new List<int>();
-            this.pointsInRing = 0;
-            this.extrusionVertices = new List<Vector3>();
-            this.extrusionUVs = new List<Vector2>();
-            this.extrusionIndices = new List<int>();
-            this.polygonUVs = new List<Vector2>();
-            this.uTotal = 0;
         }
 
         private Matrix4x4 transform;
         private MeshData outputMeshData;
-        private Options options;
+        private PolygonOptions options;
 
         // Values for the tesselator.
-        private List<float> coordinates;
-        private List<int> rings;
-        private int pointsInRing;
+        private List<float> coordinates = new List<float>();
+        private List<int> holes = new List<int>();
+        private int pointsInRing = 0;
+        private int pointsInPolygon = 0;
 
         // Values for extrusions.
-        private Point lastPoint;
-        private List<Vector3> extrusionVertices;
-        private List<Vector2> extrusionUVs;
-        private List<Vector2> polygonUVs;
-        private List<int> extrusionIndices;
-        private float uTotal;
+        private Point lastPoint = new Point();
+        private List<Vector3> extrusionVertices = new List<Vector3>();
+        private List<Vector2> extrusionUVs = new List<Vector2>();
+        private List<Vector2> polygonUVs = new List<Vector2>();
+        private List<int> extrusionIndices = new List<int>();
+        private float uCoordinateTotal = 0;
 
         public void OnPoint(Point point)
         {
             bool buildWalls =
                 options.Extrusion == ExtrusionType.TopAndSides ||
                 options.Extrusion == ExtrusionType.SidesOnly;
-
-            point.X += options.offset.x;
-            point.Y += options.offset.y;
 
             // For all but the first point in each ring, create a quad extending from the
             // previous point to the current point and from MinHeight to MaxHeight.
@@ -80,7 +49,7 @@ namespace Mapzen.Unity
                 var indexOffset = extrusionVertices.Count;
 
                 // Increase the u coordinate by the 2D distance between the points.
-                var uNext = uTotal + new Vector2(p1.X - p0.X, p1.Y - p0.Y).magnitude;
+                var uCoordinateNext = uCoordinateTotal + new Vector2(p1.X - p0.X, p1.Y - p0.Y).magnitude;
 
                 var v0 = new Vector3(p0.X, options.MaxHeight, p0.Y);
                 var v1 = new Vector3(p1.X, options.MaxHeight, p1.Y);
@@ -101,25 +70,30 @@ namespace Mapzen.Unity
                 var vTop = 1.0f;
                 var uLeft = 0.0f;
                 var uRight = 1.0f;
-                if (options.TileUVs)
+                if (options.UVMode == UVMode.Tile || options.UVMode == UVMode.TileUStretchV)
                 {
-                    vTop = options.MaxHeight;
-                    uLeft = uTotal;
-                    uRight = uNext;
+                    uLeft = uCoordinateTotal;
+                    uRight = uCoordinateNext;
                 }
+                if (options.UVMode == UVMode.Tile || options.UVMode == UVMode.StretchUTileV)
+                {
+                    vBottom = options.MinHeight;
+                    vTop = options.MaxHeight;
+                }
+
                 extrusionUVs.Add(new Vector2(uRight, vTop));
                 extrusionUVs.Add(new Vector2(uLeft, vTop));
                 extrusionUVs.Add(new Vector2(uRight, vBottom));
                 extrusionUVs.Add(new Vector2(uLeft, vBottom));
 
                 extrusionIndices.Add(indexOffset + 1);
+                extrusionIndices.Add(indexOffset + 2);
                 extrusionIndices.Add(indexOffset + 3);
                 extrusionIndices.Add(indexOffset + 2);
                 extrusionIndices.Add(indexOffset + 1);
-                extrusionIndices.Add(indexOffset + 2);
                 extrusionIndices.Add(indexOffset + 0);
 
-                uTotal = uNext;
+                uCoordinateTotal = uCoordinateNext;
             }
 
             lastPoint = point;
@@ -132,6 +106,7 @@ namespace Mapzen.Unity
             }
 
             pointsInRing++;
+            pointsInPolygon++;
         }
 
         public void AddUV(Vector2 uv)
@@ -150,22 +125,26 @@ namespace Mapzen.Unity
         public void OnBeginLinearRing()
         {
             pointsInRing = 0;
-            uTotal = 0;
+            uCoordinateTotal = 0;
+            if (pointsInPolygon > 0)
+            {
+                holes.Add(pointsInPolygon);
+            }
         }
 
         public void OnEndLinearRing()
         {
-            rings.Add(pointsInRing);
         }
 
         public void OnBeginPolygon()
         {
             coordinates.Clear();
-            rings.Clear();
+            holes.Clear();
             extrusionVertices.Clear();
             extrusionUVs.Clear();
             extrusionIndices.Clear();
             polygonUVs.Clear();
+            pointsInPolygon = 0;
         }
 
         public void OnEndPolygon()
@@ -175,29 +154,8 @@ namespace Mapzen.Unity
 
             if (coordinates.Count > 0)
             {
-                List<List<Vector3>> polygon = new List<List<Vector3>>();
-                int ringOffset = 0;
-
-                for (int i = 0; i < rings.Count; ++i)
-                {
-                    polygon.Add(new List<Vector3>());
-                    for (int ring = 0; ring < rings[i]; ++ring)
-                    {
-                        float x = coordinates[(ring + ringOffset) * 2];
-                        float y = coordinates[(ring + ringOffset) * 2 + 1];
-
-                        polygon[i].Add(new Vector3(x, 0.0f, y));
-                    }
-
-                    ringOffset += rings[i];
-                }
-
-                var flatData = EarcutLibrary.Flatten(polygon);
-
                 // Then tesselate polygon interior and add vertices and indices.
-                var indices = EarcutLibrary.Earcut(flatData.Vertices, flatData.Holes, flatData.Dim);
-
-                indices.Reverse();
+                var indices = Mapbox.EarcutLibrary.Earcut(coordinates, holes, 2);
 
                 var vertices = new List<Vector3>(coordinates.Count / 2);
 

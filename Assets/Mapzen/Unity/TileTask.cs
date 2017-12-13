@@ -1,139 +1,97 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Mapzen;
 using Mapzen.Unity;
 using Mapzen.VectorData;
-using Mapzen.VectorData.Formats;
 using Mapzen.VectorData.Filters;
 using UnityEngine;
-using System.Linq;
 
 public class TileTask
 {
+    // The tile address this task is working on
     private TileAddress address;
-    private byte[] response;
-    private bool ready;
-    private SceneGroup.Type groupOptions;
-    private float inverseTileScale;
+    // The transform applied to the geometry built the tile task builders
     private Matrix4x4 transform;
+    // The generation of this tile task
+    private int generation;
+    // The resulting data of the tile task is stored in this container
+    private List<FeatureMesh> data;
+    // The map styling this tile task is working on
+    private MapStyle featureStyling;
 
-    public TileTask(TileAddress address, SceneGroup.Type groupOptions, byte[] response, float offsetX, float offsetY, float regionScaleRatio)
+    public int Generation
     {
-        this.address = address;
-        this.response = response;
-        this.ready = false;
-        this.groupOptions = groupOptions;
-        this.inverseTileScale = 1.0f / (float)address.GetSizeMercatorMeters();
-
-        float scaleRatio = (float)address.GetSizeMercatorMeters() * regionScaleRatio;
-        Matrix4x4 scale = Matrix4x4.Scale(new Vector3(scaleRatio, scaleRatio, scaleRatio));
-        Matrix4x4 translate = Matrix4x4.Translate(new Vector3(offsetX * scaleRatio, 0.0f, offsetY * scaleRatio));
-        this.transform = translate * scale;
+        get { return generation; }
     }
 
-    public void Start(List<FeatureStyle> featureStyling, SceneGroup root)
+    public List<FeatureMesh> Data
     {
-        // Parse the GeoJSON
-        var tileData = new GeoJsonTile(address, response);
-        // var tileData = new MvtTile(address, response);
+        get { return data; }
+    }
 
-        // The leaf currently used (will hold the mesh data for the currently matched group)
-        SceneGroup leaf = root;
+    public TileTask(MapStyle featureStyling, TileAddress address, Matrix4x4 transform, int generation)
+    {
+        this.data = new List<FeatureMesh>();
+        this.address = address;
+        this.transform = transform;
+        this.generation = generation;
+        this.featureStyling = featureStyling;
+    }
 
-        var tileGroup = OnSceneGroupData(SceneGroup.Type.Tile, address.ToString(), root, ref leaf);
+    /// <summary>
+    /// Runs the tile task, resulting data will be stored in Data.
+    /// </summary>
+    /// <param name="featureCollections">The feature collections this tile task will be building.</param>
+    public void Start(IEnumerable<FeatureCollection> featureCollections)
+    {
+        float inverseTileScale = 1.0f / (float)address.GetSizeMercatorMeters();
 
-        foreach (var style in featureStyling)
+        foreach (var styleLayer in featureStyling.Layers)
         {
-            if (style == null)
+            foreach (var collection in featureCollections)
             {
-                continue;
-            }
-
-            foreach (var filterStyle in style.FilterStyles)
-            {
-                var filterGroup = OnSceneGroupData(SceneGroup.Type.Filter, filterStyle.Name, tileGroup, ref leaf);
-
-                foreach (var layer in tileData.FeatureCollections)
+                foreach (var feature in styleLayer.GetFilter().Filter(collection))
                 {
-                    var layerGroup = OnSceneGroupData(SceneGroup.Type.Layer, layer.Name, filterGroup, ref leaf);
+                    var layerStyle = styleLayer.Style;
+                    string featureName = "";
+                    object identifier;
 
-                    foreach (var feature in filterStyle.GetFilter().Filter(layer))
+                    if (feature.TryGetProperty("id", out identifier))
                     {
-                        var layerStyle = filterStyle.LayerStyles.Find(ls => ls.LayerName == layer.Name);
+                        featureName += identifier.ToString();
+                    }
 
-                        string featureName = "";
-                        object identifier;
+                    // Resulting data for this feature.
+                    FeatureMesh featureMesh = new FeatureMesh(address.ToString(), collection.Name, styleLayer.Name, featureName);
 
-                        if (feature.TryGetProperty("id", out identifier))
+                    IGeometryHandler handler = null;
+
+                    if (feature.Type == GeometryType.Polygon || feature.Type == GeometryType.MultiPolygon)
+                    {
+                        var polygonOptions = layerStyle.GetPolygonOptions(feature, inverseTileScale);
+
+                        if (polygonOptions.Enabled)
                         {
-                            featureName += identifier.ToString();
+                            handler = new PolygonBuilder(featureMesh.Mesh, polygonOptions, transform);
                         }
+                    }
 
-                        OnSceneGroupData(SceneGroup.Type.Feature, featureName, layerGroup, ref leaf);
+                    if (feature.Type == GeometryType.LineString || feature.Type == GeometryType.MultiLineString)
+                    {
+                        var polylineOptions = layerStyle.GetPolylineOptions(feature, inverseTileScale);
 
-                        if (feature.Type == GeometryType.Polygon || feature.Type == GeometryType.MultiPolygon)
+                        if (polylineOptions.Enabled)
                         {
-                            var polygonOptions = layerStyle.GetPolygonOptions(feature, inverseTileScale);
-
-                            if (polygonOptions.Enabled)
-                            {
-                                var builder = new PolygonBuilder(leaf.meshData, polygonOptions, transform);
-                                feature.HandleGeometry(builder);
-                            }
+                            handler = new PolylineBuilder(featureMesh.Mesh, polylineOptions, transform);
                         }
+                    }
 
-                        if (feature.Type == GeometryType.LineString || feature.Type == GeometryType.MultiLineString)
-                        {
-                            var polylineOptions = layerStyle.GetPolylineOptions(feature, inverseTileScale);
-
-                            if (polylineOptions.Enabled)
-                            {
-                                var builder = new PolylineBuilder(leaf.meshData, polylineOptions, transform);
-                                feature.HandleGeometry(builder);
-                            }
-                        }
+                    if (handler != null)
+                    {
+                        feature.HandleGeometry(handler);
+                        data.Add(featureMesh);
                     }
                 }
             }
         }
-
-        ready = true;
-    }
-
-    private SceneGroup OnSceneGroupData(SceneGroup.Type type, string name, SceneGroup parent, ref SceneGroup leaf)
-    {
-        SceneGroup group = null;
-
-        if (SceneGroup.Test(type, groupOptions))
-        {
-            if (parent.childs.ContainsKey(name))
-            {
-                group = parent.childs[name];
-            }
-
-            // No group found for this idenfier
-            if (group == null)
-            {
-                group = new SceneGroup(type, name);
-                parent.childs[name] = group;
-            }
-
-            // Update the leaf
-            if (SceneGroup.IsLeaf(type, groupOptions))
-            {
-                leaf = group;
-            }
-        }
-        else
-        {
-            group = parent;
-        }
-
-        return group;
-    }
-
-    public bool IsReady()
-    {
-        return ready;
     }
 }
