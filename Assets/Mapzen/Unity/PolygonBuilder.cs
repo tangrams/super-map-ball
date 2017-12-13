@@ -39,6 +39,9 @@ namespace Mapzen.Unity
                 options.Extrusion == ExtrusionType.TopAndSides ||
                 options.Extrusion == ExtrusionType.SidesOnly;
 
+            point.X += options.Offset.x;
+            point.Y += options.Offset.y;
+
             // For all but the first point in each ring, create a quad extending from the
             // previous point to the current point and from MinHeight to MaxHeight.
             if (buildWalls && pointsInRing > 0)

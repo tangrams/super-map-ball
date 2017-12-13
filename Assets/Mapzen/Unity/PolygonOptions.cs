@@ -13,5 +13,7 @@ namespace Mapzen.Unity
         public float MaxHeight;
 
         public bool Enabled;
+
+        public Vector2 Offset;
     }
 }

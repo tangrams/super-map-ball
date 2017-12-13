@@ -36,6 +36,19 @@ namespace Mapzen.Unity
             options.MaxHeight *= inverseTileScale;
             options.MinHeight *= inverseTileScale;
 
+            // FIXME: This is a hack to avoid building side z-fighting.
+            object identifier;
+            if (feature.TryGetProperty("id", out identifier) && identifier is double)
+            {
+                double modx = 10;
+                double mody = 100;
+                double modz = 1000;
+                options.Offset.x = (float)((double)identifier % modx / modx);
+                options.Offset.y = (float)((double)identifier % mody / mody);
+                options.Offset *= inverseTileScale;
+                options.MaxHeight += (float)((double)identifier % modz / modz) * inverseTileScale;
+            }
+
             return options;
         }
 
@@ -45,6 +58,14 @@ namespace Mapzen.Unity
 
             options.Width *= inverseTileScale;
             options.MaxHeight *= inverseTileScale;
+
+            // FIXME: This is a hack to avoid building side z-fighting.
+            object identifier;
+            if (feature.TryGetProperty("id", out identifier) && identifier is double)
+            {
+                double modz = 10;
+                options.MaxHeight += (float)((double)identifier % modz / modz) * inverseTileScale;
+            }
 
             return options;
         }
