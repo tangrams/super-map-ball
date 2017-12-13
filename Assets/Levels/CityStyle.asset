@@ -1,0 +1,440 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4edcc12ded754f86bc8b9ea3b3c3ee6, type: 3}
+  m_Name: CityStyle
+  m_EditorClassIdentifier: 
+  serializedAssetVersion: 1
+  Layers:
+  - Name: Water
+    FeatureCollection: 256
+    Combiner: 0
+    Matchers: []
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: d8246d480c5644ecc9ae385f88300e80, type: 2}
+        Extrusion: 0
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: -0.5
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Earth
+    FeatureCollection: 4
+    Combiner: 0
+    Matchers: []
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: 7f88baed2a0f94bb3a42f7bc45b5fcf8, type: 2}
+        Extrusion: 1
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0.2
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Roads
+    FeatureCollection: 64
+    Combiner: 0
+    Matchers:
+    - MatcherKind: 4
+      PropertyKey: kind
+      PropertyValue: major_road
+      RegexPattern: 
+      MinRange: 0
+      MaxRange: 0
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        UVMode: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 0
+      PolylineBuilder:
+        Material: {fileID: 2100000, guid: d881b786e8a584d79b49fac171c95ea0, type: 2}
+        Extrusion: 1
+        MinHeight: 0
+        MaxHeight: 1
+        Width: 15
+        MiterLimit: 3
+        Enabled: 1
+  - Name: Parks
+    FeatureCollection: 8
+    Combiner: 0
+    Matchers: []
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: c5bc0927aa4854f4a977c28df5b0b083, type: 2}
+        Extrusion: 1
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0.4
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Building Sides 1
+    FeatureCollection: 2
+    Combiner: 1
+    Matchers:
+    - MatcherKind: 2
+      PropertyKey: scale_rank
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 0.5
+      MaxRange: 1.5
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: 360982c1d471c45d5ad7d0d8f78be7fe, type: 2}
+        Extrusion: 2
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Building Sides 2
+    FeatureCollection: 2
+    Combiner: 1
+    Matchers:
+    - MatcherKind: 2
+      PropertyKey: scale_rank
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 1.5
+      MaxRange: 2.5
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: 086b96e604d1b4237821834d57d9e61a, type: 2}
+        Extrusion: 2
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Building Sides 3
+    FeatureCollection: 2
+    Combiner: 1
+    Matchers:
+    - MatcherKind: 2
+      PropertyKey: scale_rank
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 2.5
+      MaxRange: 3.5
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: d346cbfcd059e4ded829832becb95c0a, type: 2}
+        Extrusion: 2
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Building Sides 4
+    FeatureCollection: 2
+    Combiner: 1
+    Matchers:
+    - MatcherKind: 2
+      PropertyKey: scale_rank
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 3.5
+      MaxRange: 4.5
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: 91a74d3b8970c4316956b8cd707084bd, type: 2}
+        Extrusion: 2
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Building Sides 5
+    FeatureCollection: 2
+    Combiner: 1
+    Matchers:
+    - MatcherKind: 2
+      PropertyKey: scale_rank
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 4.5
+      MaxRange: 5.5
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: bba6c9d06dec34b499e3e54bfd990418, type: 2}
+        Extrusion: 2
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Building Roofs 1
+    FeatureCollection: 2
+    Combiner: 1
+    Matchers:
+    - MatcherKind: 2
+      PropertyKey: scale_rank
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 0.5
+      MaxRange: 1.5
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: 746c04070ccf64634aced6922593d6c6, type: 2}
+        Extrusion: 0
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Building Roofs 2
+    FeatureCollection: 2
+    Combiner: 1
+    Matchers:
+    - MatcherKind: 2
+      PropertyKey: scale_rank
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 1.5
+      MaxRange: 2.5
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: cfe493c553ef043ecae259e7f4a79672, type: 2}
+        Extrusion: 0
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Building Roofs 3
+    FeatureCollection: 2
+    Combiner: 1
+    Matchers:
+    - MatcherKind: 2
+      PropertyKey: scale_rank
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 2.5
+      MaxRange: 3.5
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: 75c9cc6207328411a97d1af361c8ecce, type: 2}
+        Extrusion: 0
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Building Roofs 4
+    FeatureCollection: 2
+    Combiner: 1
+    Matchers:
+    - MatcherKind: 2
+      PropertyKey: scale_rank
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 3.5
+      MaxRange: 4.5
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: 5792baacfc7a944d3aae895b1c597f56, type: 2}
+        Extrusion: 0
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Building Roofs 5
+    FeatureCollection: 2
+    Combiner: 1
+    Matchers:
+    - MatcherKind: 2
+      PropertyKey: scale_rank
+      PropertyValue: 
+      RegexPattern: 
+      MinRange: 4.5
+      MaxRange: 5.5
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 2100000, guid: 8a14ae188af6a45c58753931787a749f, type: 2}
+        Extrusion: 0
+        UVMode: 1
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 1
+      PolylineBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Width: 0
+        MiterLimit: 0
+        Enabled: 0
+  - Name: Minor Roads
+    FeatureCollection: 64
+    Combiner: 0
+    Matchers:
+    - MatcherKind: 4
+      PropertyKey: kind
+      PropertyValue: minor_road
+      RegexPattern: 
+      MinRange: 0
+      MaxRange: 0
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        UVMode: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 0
+      PolylineBuilder:
+        Material: {fileID: 2100000, guid: d881b786e8a584d79b49fac171c95ea0, type: 2}
+        Extrusion: 1
+        MinHeight: 0
+        MaxHeight: 0.8
+        Width: 8
+        MiterLimit: 3
+        Enabled: 1
+  - Name: Highways
+    FeatureCollection: 64
+    Combiner: 0
+    Matchers:
+    - MatcherKind: 4
+      PropertyKey: kind
+      PropertyValue: highway
+      RegexPattern: 
+      MinRange: 0
+      MaxRange: 0
+      MinRangeEnabled: 0
+      MaxRangeEnabled: 0
+    Style:
+      PolygonBuilder:
+        Material: {fileID: 0}
+        Extrusion: 0
+        UVMode: 0
+        MinHeight: 0
+        MaxHeight: 0
+        Enabled: 0
+      PolylineBuilder:
+        Material: {fileID: 2100000, guid: d881b786e8a584d79b49fac171c95ea0, type: 2}
+        Extrusion: 1
+        MinHeight: 0
+        MaxHeight: 1.2
+        Width: 8
+        MiterLimit: 3
+        Enabled: 1
+  liveUpdateEnabled: 0
