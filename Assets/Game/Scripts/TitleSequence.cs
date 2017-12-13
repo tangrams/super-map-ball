@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TitleSequence : MonoBehaviour {
 
-    public GameObject IntroObject;
+    public GameObject IntroOrbitObject;
+    public GameObject IntroUIObject;
     public GameObject GamePlayUIObject;
     public GameObject StartUIObject;
 
@@ -60,9 +61,10 @@ public class TitleSequence : MonoBehaviour {
             GamePlayUIObject.SetActive(!titleSequenceActive);
         }
 
-        if (IntroObject != null)
+        if (IntroUIObject != null)
         {
-            IntroObject.SetActive(titleSequenceActive);
+            IntroUIObject.SetActive(titleSequenceActive);
+            IntroOrbitObject.SetActive(titleSequenceActive);
         }
 
         if (!titleSequenceActive && startUI != null)
@@ -70,9 +72,9 @@ public class TitleSequence : MonoBehaviour {
             startUI.DoStartSequence(ballController);
         }
 
-        if (titleSequenceActive && IntroObject != null)
+        if (titleSequenceActive && IntroUIObject != null)
         {
-            this.transform.SetParent(IntroObject.transform);
+            this.transform.SetParent(IntroOrbitObject.transform);
             this.transform.localPosition = Vector3.zero;
             this.transform.localRotation = Quaternion.identity;
         }

@@ -12,7 +12,7 @@ public class IntroCameraOrbit : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        this.transform.RotateAround(OrbitTarget.transform.position, Vector3.up, 0.03f);
+	void FixedUpdate () {
+        this.transform.RotateAround(OrbitTarget.transform.position, Vector3.up, Time.fixedDeltaTime * 3);
 	}
 }
