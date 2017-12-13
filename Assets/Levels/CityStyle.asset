@@ -23,8 +23,9 @@ MonoBehaviour:
         Extrusion: 0
         UVMode: 1
         MinHeight: 0
-        MaxHeight: -0.5
+        MaxHeight: -5
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -45,6 +46,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0.2
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -73,6 +75,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 0
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 2100000, guid: d881b786e8a584d79b49fac171c95ea0, type: 2}
         Extrusion: 1
@@ -93,6 +96,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0.4
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -121,6 +125,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -149,6 +154,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -177,6 +183,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -205,6 +212,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -233,6 +241,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -261,6 +270,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -289,6 +299,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -317,6 +328,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -345,6 +357,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -373,6 +386,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
@@ -401,6 +415,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 0
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 2100000, guid: d881b786e8a584d79b49fac171c95ea0, type: 2}
         Extrusion: 1
@@ -429,6 +444,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 0
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 2100000, guid: d881b786e8a584d79b49fac171c95ea0, type: 2}
         Extrusion: 1
