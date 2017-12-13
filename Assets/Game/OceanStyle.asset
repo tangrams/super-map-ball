@@ -25,6 +25,7 @@ MonoBehaviour:
         MinHeight: 0
         MaxHeight: 0
         Enabled: 1
+        Offset: {x: 0, y: 0}
       PolylineBuilder:
         Material: {fileID: 0}
         Extrusion: 0
